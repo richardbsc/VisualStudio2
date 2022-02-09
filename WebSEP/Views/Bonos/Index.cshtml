@@ -1,0 +1,78 @@
+﻿@using Modelo.Entidades
+@model IEnumerable<Bono>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><span class="fas fa-hand-holding-usd"></span> Bonos</h1>
+<p>Bonos de la empresa</p>
+
+<div class="container">   
+
+    @if(TempData["mensaje"] != null)
+    {
+      <div class="alert alert-warning alert-alert-dismissible fade show" role="alert">
+        @TempData["mensaje"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+            <span aria-hidden="true">
+                &times;
+            </span>
+        </button>
+    </div>   
+    }   
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Lista de bonos</h3>
+        </div>
+        <div class="col-sm-6">
+            <a class="btn btn-success d-block"
+            asp-controller = "Bonos" asp-action="Create">
+            Crear nuevo bono
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>Bono Id</td>
+                    <td>Nombre</td>
+                    <td>Tipo</td>                    
+                    <td>Valor</td>
+                    <td>Empleado Id</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(Bono bono in Model)
+                {
+                <tr>
+                    <td>@bono.BonoId</td>
+                    <td>@bono.Nombre</td>
+                    <td>@bono.Tipo</td>      
+                    <td>@bono.Valor</td>   
+                    <td>@bono.Empleado.Nombres</td>   
+                    <td>
+                        <a class="btn btn-warning"
+                        asp-controller="Bonos" asp-action="Edit" asp-route-id="@bono.BonoId">
+                            Editar
+                        </a>        
+                        <a class="btn alert-danger"
+                        asp-controller="Bonos" asp-action="Delete" asp-route-id="@bono.BonoId">
+                            Borrar
+                        </a>  
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+

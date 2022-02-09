@@ -1,0 +1,77 @@
+﻿@using Modelo.Entidades
+@model Sueldo
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Sueldo</h1>
+<p>Se muestra los sueldos del personal de la empresa</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <form method="post" asp-action="Detalles">
+                 @foreach (var iteme in Model.Empleados)
+                        {     
+                    <div class="form-group">
+                    <label class="control-label">Empleado Id</label>
+                    <input class="form-control" asp-for=@iteme.EmpleadoId />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nombre</label>
+                        <input class="form-control" asp-for=@iteme.Nombres />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Apellido</label>
+                        <input class="form-control" asp-for=@iteme.Apellidos />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Cedula</label>
+                        <input class="form-control" asp-for=@iteme.Cedula />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        <input class="form-control" asp-for=@iteme.Email />
+                    </div>
+                        }
+                <div class="form-group">
+                    <input type="submit" value="Validar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-8">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr> 
+                            <td>Sucursal</td>
+                            <td>Cargo</td>
+                            <td>Sueldo Base</td>
+                            <td>Facturas</td>
+                            <td>Sueldo F.</td>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                       @foreach (var item in Model.Empleados)
+                        {                             
+                                <td>@item.Sucursal.Nombre</td>
+                                @foreach (var itemc in Model.Cargos)
+                                {
+                                    <td>@itemc.Nombre</td>
+                                }                            
+                                <td>@Model.SueldoBase </td>
+                                @foreach (var itemf in Model.Facturas)
+                                {
+                                    <td>@itemf.Importe</td>       
+                                        /*@ViewBag.CalcSueldos.Sueldo(@itemf.Importe)*/
+                                }   
+                                <td>@ViewBag.CalcSueldos</td>
+                           
+                        }            
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>

@@ -1,0 +1,72 @@
+﻿@using Modelo.Entidades
+@model IEnumerable<Sucursal>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><span class="fas fa-building"></span> Sucursales</h1>
+<p>Sucursales de la empresa</p>
+
+<div class="container">   
+
+    @if(TempData["mensaje"] != null)
+    {
+      <div class="alert alert-warning alert-alert-dismissible fade show" role="alert">
+        @TempData["mensaje"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+            <span aria-hidden="true">
+                &times;
+            </span>
+        </button>
+    </div>   
+    }   
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Lista de sucursales</h3>
+        </div>
+        <div class="col-sm-6">
+            <a class="btn btn-success d-block"
+            asp-controller = "Sucursales" asp-action="Create">
+            Crear nuevo sucursal
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>Sucursal Id</td>
+                    <td>Nombre</td>
+                    <td>Direccion</td>                    
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(Sucursal sucursal in Model)
+                {
+                <tr>
+                    <td>@sucursal.SucursalId</td>
+                    <td>@sucursal.Nombre</td>
+                    <td>@sucursal.Direccion</td>                    
+                    <td>
+                        <a class="btn btn-warning"
+                        asp-controller="Sucursales" asp-action="Edit" asp-route-id="@sucursal.SucursalId">
+                            Editar
+                        </a>        
+                        <a class="btn alert-danger"
+                        asp-controller="Sucursales" asp-action="Delete" asp-route-id="@sucursal.SucursalId">
+                            Borrar
+                        </a>  
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
