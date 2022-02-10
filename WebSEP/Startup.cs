@@ -63,7 +63,7 @@ namespace WebSEP
             //Configurar serivicio de conexion a la BDD
             services.AddDbContext<Repositorio>(options =>
             options.UseSqlServer(
-                "Server=DESKTOP-V7VPQBI;Initial Catalog=SisEvalV4_2;Trusted_Connection=True"
+                "Server=DESKTOP-FRUGM4F;Initial Catalog=SisEvalV4_2;Trusted_Connection=True"
                 )
             );
             */

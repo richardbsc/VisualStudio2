@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Modelo.Entidades;
 using Modelo.Operaciones;
 using ModeloBD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,11 @@ namespace WebSEP.Controllers
     public class SueldosController : Controller
     {
         private readonly Repositorio db;
+        int iden;
         public SueldosController(Repositorio db)
         {
             this.db = db;
+            
         }
         public IActionResult Index()
         {
@@ -24,10 +27,15 @@ namespace WebSEP.Controllers
                 .Include(empleado => empleado.DesempenoSc);
 
             return View(listaEmpleados);
+
+
+
+
         }
         
         public IActionResult Detalles(int id)
         {
+            this.iden = id;
             var sueldo = db.Sueldos
                 .Include(sueldo => sueldo.Cargos)
                 .Include(sueldo => sueldo.Facturas)
@@ -35,7 +43,12 @@ namespace WebSEP.Controllers
                     .ThenInclude(sueldo => sueldo.Sucursal)
                 .Single(sueldo => sueldo.SueldoId == id);
                 ;
-            
+
+            var e = db.Empleados
+                .Include(em => em.Sueldo)
+                .Single(em => em.SueldoId == sueldo.SueldoId)
+                ;
+
             var f = db.Facturas
                 .Include(fac => fac.Sueldo)
                 .Single(fac => fac.SueldoId == sueldo.SueldoId)
@@ -49,40 +62,47 @@ namespace WebSEP.Controllers
             var s = db.Sueldos
                     .Single(s => s.SueldoId == sueldo.SueldoId)
                     ;
-            /*
-            var f = db.Facturas
-                .Select(fac => new
-                {
-                    Importe = fac.Importe
-                })
-                .Where(fac => fac.Importe );
-
-            var listaEmpleados = db.Empleados
-                .Select(empleados => new
-                {
-                    EmpleadoId = empleados.EmpleadoId,
-                    Nombres = empleados.Nombres + " " + empleados.Apellidos,
-                }).ToList();
-            */
+          
             var f1 = sueldo.SueldoBase;
 
             var facturas = db.Facturas.FirstOrDefault();
             var cargoS = db.Cargos.FirstOrDefault();
+            var sBonos = 0f;
+            var bono = 0f;
 
             CalculoSueldos calcSueldos = new CalculoSueldos(c, f);
             var sueldoF = calcSueldos.Sueldo(s);
+            
             if (calcSueldos.Aprobado(f))
             {
-                sueldoF = sueldoF + 100;
+                //sueldoF = sueldoF + 100;
+                sBonos = sueldoF + 100;
+                bono =  100;
+                TempData["mensaje"] = $"El empleado {e.Nombres +" "+ e.Apellidos}  es acreedor al Bono";
 
             }
+            else
+            {
+                sBonos = sueldoF;
+                TempData["mensaje"] = $"El empleado NO {e.Nombres + " " + e.Apellidos}  es acreedor al Bono";
+            }
 
-            ViewBag.CalcSueldos = sueldoF;
-             
+            decimal decSuelF = Math.Round((decimal)sueldoF, 2);
+            decimal decBonos = Math.Round((decimal)sBonos, 2);
+
+            ViewBag.CalcSueldos = decSuelF;
+            ViewBag.Bono = bono;
+            ViewBag.CalcSueldosB = decBonos;
             return View(sueldo);
         }
-        
-            /*
+
+        [HttpPost]
+        public IActionResult Detalles(Sueldo  sueldo)
+        {
+            return RedirectToAction("Index");
+        }       
+
+        /*
             public IActionResult Detalles(int id)
             {
                 var empleado = db.Empleados

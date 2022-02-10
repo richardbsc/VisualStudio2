@@ -33,8 +33,8 @@ namespace ConsoleApp
                 conn = ConfigurationManager.ConnectionStrings[dbtipo].ConnectionString;
             }
 
-            var serverVersion = ServerVersion.AutoDetect(conn);
-            Console.WriteLine(serverVersion);
+            
+            //Console.WriteLine(serverVersion);
 
             // Construye la conección acorde con el tipo
             DbContextOptions<Repositorio> contextOptions;
@@ -51,6 +51,7 @@ namespace ConsoleApp
                         .Options;
                     break;
                 case nameof(DBTipoConn.MySql):
+                    var serverVersion = ServerVersion.AutoDetect(conn);
                     contextOptions = new DbContextOptionsBuilder<Repositorio>()
                         .UseMySql(conn, serverVersion)
                         .Options;

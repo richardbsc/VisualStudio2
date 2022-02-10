@@ -15,23 +15,33 @@ namespace Modelo.Operaciones
         public CalculoSueldos(Cargo cargo, Factura factura)
         {
             this.salario = cargo.Salario;
-            this.facturas = factura.Importe;
-            //10000
-            this.bempleado = 500;
+            this.facturas = factura.Importe;            
+            this.bempleado = 10000;
         }      
 
         public bool Aprobado(Factura factura)
         {
-            return factura.Importe >= bempleado;
+            var fa = factura.Importe / 1.12;
+            return fa >= bempleado;
         }
-
+            
         public float Sueldo(Sueldo sueldo)
         {
             float sueldoFinal;
 
-            sueldoFinal = salario + facturas + sueldo.SueldoBase;
+            var comision = (facturas/1.12f) * .01f;
+
+            sueldoFinal = salario + comision + sueldo.SueldoBase;
 
             return sueldoFinal;
+        }
+
+        public float totIVA(Sueldo sueldo)
+        {           
+
+            var sin = facturas / 1.12f;          
+
+            return sin;
         }
 
     }

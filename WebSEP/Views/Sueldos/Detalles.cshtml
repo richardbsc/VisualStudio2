@@ -34,10 +34,19 @@
                         <label class="control-label">Email</label>
                         <input class="form-control" asp-for=@iteme.Email />
                     </div>
-                        }
+                    @foreach( var ifac in Model.Facturas)
+                    {
+                        <div class="form-group">
+                        <label class="control-label">Importe</label>
+                        <input class="form-control" asp-for=@ifac.Importe />
+                    </div>
+                    }                  
+
+                    }
                 <div class="form-group">
                     <input type="submit" value="Validar" class="btn btn-primary" />
                 </div>
+                
             </form>
         </div>
 
@@ -49,7 +58,9 @@
                             <td>Cargo</td>
                             <td>Sueldo Base</td>
                             <td>Facturas</td>
-                            <td>Sueldo F.</td>                            
+                            <td>Sueldo</td>  
+                            <td>Bono</td>
+                            <td>Sueldo F. </td> 
                         </tr>
                     </thead>
                     <tbody>
@@ -68,7 +79,8 @@
                                         /*@ViewBag.CalcSueldos.Sueldo(@itemf.Importe)*/
                                 }   
                                 <td>@ViewBag.CalcSueldos</td>
-                           
+                                <td>@ViewBag.Bono</td>
+                                <td>@ViewBag.CalcSueldosB</td>
                         }            
                         </tr>
                     </tbody>
